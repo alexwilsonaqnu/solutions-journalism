@@ -1,6 +1,7 @@
 """library-build budget enforcement and golden-set tooling (snapshot round trip, weight fitting)."""
 
 import json
+from pathlib import Path
 
 import pytest
 from test_library import good_draft
@@ -59,12 +60,14 @@ def test_crashes_are_charged_the_full_cap(monkeypatch):
     assert report.attempted == 2 and report.spent_usd == 4.0 and report.failures["crash"] == 2
 
 
-def test_snapshot_round_trip_and_fit(tmp_path):
-    from solbrief.matcher.golden import GOLDEN_DIR
+FIXTURE_GOLDEN = Path(__file__).parent / "fixtures" / "matcher_golden"
 
-    doc, pairs = load_pairs()
+
+def test_snapshot_round_trip_and_fit(tmp_path):
+    # Offline fixture library (no embeddings); the live set in evals/matcher_golden is exercised by the eval.
+    doc, pairs = load_pairs(FIXTURE_GOLDEN / "golden.yaml")
     with session_scope() as s:
-        load_snapshot(s, GOLDEN_DIR / "library.json")
+        load_snapshot(s, FIXTURE_GOLDEN / "library.json")
         snap = build_snapshot(s, pairs)
         before = evaluate(s, pairs).recall_all
         weights, base, after = fit_weights(s, pairs, default_weights(), rounds=1)
