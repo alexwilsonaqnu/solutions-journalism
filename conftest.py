@@ -29,6 +29,7 @@ os.environ["ADMIN_TOKEN"] = "test-admin-token"
 # so real keys in .env can't leak into the test run.
 for _key in (
     "ANTHROPIC_API_KEY",
+    "SOLBRIEF_ANTHROPIC_API_KEY",
     "VOYAGE_API_KEY",
     "OPENALEX_API_KEY",
     "LOGFIRE_TOKEN",

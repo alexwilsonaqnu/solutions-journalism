@@ -6,7 +6,7 @@ from datetime import time
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -29,7 +29,11 @@ class Settings(BaseSettings):
     alert_email: str | None = None
 
     # Providers
-    anthropic_api_key: str | None = None
+    # Prefer SOLBRIEF_ANTHROPIC_API_KEY: a plain ANTHROPIC_API_KEY in a Claude Code environment would also be
+    # picked up by Claude Code itself. Either name works; the prefixed one wins if both are set.
+    anthropic_api_key: str | None = Field(
+        None, validation_alias=AliasChoices("SOLBRIEF_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY")
+    )
     voyage_api_key: str | None = None
     postmark_server_token: str | None = None
     postmark_inbound_webhook_secret: str | None = None

@@ -1,6 +1,8 @@
 # CLAUDE.md — Solutions Briefing
 
 Daily solutions-journalism briefing for US reporters (Knight Lab). Read `docs/PLAN.md` before changing behavior.
+**Starting a new session? Read `docs/HANDOFF.md` first** — current state, the owner's approvals (e.g. the $80
+library-build cap), local Postgres setup, and the next steps.
 
 ## The trust invariant
 A single invented piece of evidence ends trust in the product. Therefore:
