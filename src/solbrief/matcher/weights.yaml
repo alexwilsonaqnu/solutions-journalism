@@ -1,8 +1,10 @@
 # Matcher feature weights: score = Σ weight × feature (features are 0..1; feedback is a penalty).
-# Initial hand-set values; `solbrief matcher-fit` tunes them on the golden set and rewrites this file.
-version: 1
-fitted_on: null
-recall_at_5: null
+# Hand-set values; `solbrief matcher-fit` tunes them on the golden set and rewrites this file.
+# 2026-11-03 fit on 31 proposed pairs / 11 live cards left every weight unchanged (recall@5 1.0 before and
+# after; top-1 30/31). The library is too small for recall@5 to discriminate — refit as it grows.
+version: 2
+fitted_on: 31 golden pairs (live)
+recall_at_5: 1.0
 weights:
   semantic: 0.40   # cosine similarity of Voyage embeddings (query vs card)
   class: 0.25      # taxonomy overlap: 1 exact, 0.5 via parent/child

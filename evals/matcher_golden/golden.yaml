@@ -4,56 +4,161 @@
 #         confirmed — checked by a Knight Lab editor; CI fails if recall@5 on confirmed pairs < threshold
 #         rejected  — excluded
 #
-# INTERIM: pairs below target the fixture library in library.json (kind: fixture). Once the real library is
-# built (`solbrief library-build`), these are rewritten against real card slugs and `solbrief golden-snapshot`
-# freezes the library + query embeddings.
+# Drafted 2026-11-03 against the first live library build (11 publishable cards). Expected values are card
+# slugs; `solbrief golden-snapshot` freezes those cards (plus the rest of the publishable library as
+# distractors) and the query embeddings into library.json. Local framings carry the reporter's county FIPS.
+# The offline fixture set used by unit tests lives in tests/fixtures/matcher_golden.
 version: 1
-library_kind: fixture
+library_kind: live
 threshold_confirmed_recall_at_5: null   # set from the first fitted baseline on confirmed pairs
-fixture_min_recall_at_5: 0.8            # sanity floor for the interim fixture set (no embeddings)
 pairs:
+  # --- mental health / primary care
   - id: g01
     status: proposed
-    query: Homeless encampments are growing downtown and the city council wants options
-    expected: [fixture-housing-first]
+    query: Primary care clinics can't get their depressed patients in to see a psychiatrist
+    expected: [collaborative-care-case-managers-link-primary-care-doctors-a-5d381a]
   - id: g02
     status: proposed
-    query: Rents are rising so fast that low-income families are being priced out
-    expected: [fixture-housing-vouchers]
+    query: Months-long waits for mental health treatment in our county, and family doctors say they're overwhelmed
+    fips: ["30111"]
+    expected: [collaborative-care-case-managers-link-primary-care-doctors-a-5d381a]
   - id: g03
     status: proposed
-    query: Repeat drunk drivers keep causing deadly crashes on county roads
-    expected: [fixture-ignition-interlocks]
+    query: Depression and anxiety are going untreated among adults on Medicaid
+    expected: [collaborative-care-case-managers-link-primary-care-doctors-a-5d381a]
+  # --- college math / remediation
   - id: g04
     status: proposed
-    query: Kids injured in car crashes because their car seats were installed wrong
-    expected: [fixture-child-safety-seats]
+    query: Most community college students placed in remedial algebra never finish a degree
+    expected: [dana-center-mathematics-pathways-career-aligned-accelerated--f6ea34]
   - id: g05
     status: proposed
-    query: Childhood measles vaccination rates have dropped in rural counties
-    fips: ["30063"]
-    expected: [fixture-vaccination-home-visits, fixture-vaccination-reminders]
+    query: Developmental math is a dead end for students at the local community college
+    fips: ["48453"]
+    expected: [dana-center-mathematics-pathways-career-aligned-accelerated--f6ea34]
   - id: g06
     status: proposed
-    query: Teen vaping is up sharply at local high schools
-    expected: [fixture-digital-substance-use]
+    query: College algebra failure rates are blocking students from nursing and other career programs
+    expected: [dana-center-mathematics-pathways-career-aligned-accelerated--f6ea34]
+  # --- early literacy
   - id: g07
     status: proposed
-    query: Clinics can't keep up with patients who have depression
-    expected: [fixture-collaborative-care]
+    query: Kindergartners are arriving at school without basic vocabulary or pre-reading skills
+    expected: [dialogic-reading-interactive-picture-book-reading-in-which-a-0613af]
   - id: g08
     status: proposed
-    query: Not enough preschool seats for three- and four-year-olds
-    expected: [fixture-early-childhood-ed]
+    query: Fewer than half of third graders in the district read on grade level
+    fips: ["12031"]
+    expected: [dialogic-reading-interactive-picture-book-reading-in-which-a-0613af]
   - id: g09
     status: proposed
-    query: Few students from our high schools go on to college
-    expected: [fixture-dual-enrollment]
+    query: Parents and preschool teachers want ways to build toddlers' language before kindergarten
+    expected: [dialogic-reading-interactive-picture-book-reading-in-which-a-0613af]
+  # --- teen substance use
   - id: g10
     status: proposed
-    query: Fights and violence in middle schools are increasing
-    expected: [fixture-school-violence]
+    query: Teen vaping and cannabis use are up sharply at local high schools
+    fips: ["19153"]
+    expected: [digital-programs-web-app-text-to-prevent-teen-alcohol-cannab-0b7cbf]
   - id: g11
     status: proposed
-    query: Binge drinking and alcohol-related deaths keep climbing in the state
-    expected: [fixture-alcohol-taxes]
+    query: More middle schoolers are trying alcohol and marijuana, survey finds
+    expected: [digital-programs-web-app-text-to-prevent-teen-alcohol-cannab-0b7cbf]
+  - id: g12
+    status: proposed
+    query: Schools have no budget for drug prevention counselors; is there something cheaper that works?
+    expected: [digital-programs-web-app-text-to-prevent-teen-alcohol-cannab-0b7cbf]
+  # --- college persistence
+  - id: g13
+    status: proposed
+    query: A third of freshmen at the state university don't come back for sophomore year
+    fips: ["06019"]
+    expected:
+      - first-year-experience-courses-freshman-seminars-to-raise-col-04b8ec
+  - id: g14
+    status: proposed
+    query: First-generation college students are dropping out before earning a degree
+    expected:
+      - first-year-experience-courses-freshman-seminars-to-raise-col-04b8ec
+      - flight-long-term-mentoring-case-management-and-prepaid-schol-69623c
+  - id: g15
+    status: proposed
+    query: Low-income teens in our county rarely make it to college, let alone graduate
+    fips: ["12086"]
+    expected: [flight-long-term-mentoring-case-management-and-prepaid-schol-69623c]
+  - id: g16
+    status: proposed
+    query: Scholarships alone aren't getting poor students through college; what else helps?
+    expected: [flight-long-term-mentoring-case-management-and-prepaid-schol-69623c]
+  # --- vaccination
+  - id: g17
+    status: proposed
+    query: Childhood measles vaccination rates have dropped in rural counties
+    fips: ["04017"]
+    expected: [home-visits-to-raise-vaccination-rates-in-children-and-adult-cb5834]
+  - id: g18
+    status: proposed
+    query: Homebound seniors are missing flu and COVID shots
+    expected: [home-visits-to-raise-vaccination-rates-in-children-and-adult-cb5834]
+  - id: g19
+    status: proposed
+    query: Kindergarten immunization rates in the county are the lowest in a decade
+    fips: ["21111"]
+    expected: [home-visits-to-raise-vaccination-rates-in-children-and-adult-cb5834]
+  # --- drunk driving
+  - id: g20
+    status: proposed
+    query: Repeat drunk drivers keep causing deadly crashes on county roads
+    fips: ["30111"]
+    expected: [ignition-interlocks-for-people-convicted-of-alcohol-impaired-e165f0]
+  - id: g21
+    status: proposed
+    query: Lawmakers are debating tougher penalties after a wave of DUI fatalities
+    expected: [ignition-interlocks-for-people-convicted-of-alcohol-impaired-e165f0]
+  - id: g22
+    status: proposed
+    query: People keep driving drunk even after their licenses are suspended
+    expected: [ignition-interlocks-for-people-convicted-of-alcohol-impaired-e165f0]
+  # --- diabetes
+  - id: g23
+    status: proposed
+    query: Type 2 diabetes rates have doubled in our county over twenty years
+    fips: ["28049"]
+    expected: [intensive-diet-and-exercise-coaching-for-adults-with-type-2--d78f01]
+  - id: g24
+    status: proposed
+    query: Diabetes complications like amputations and kidney failure are rising
+    expected: [intensive-diet-and-exercise-coaching-for-adults-with-type-2--d78f01]
+  - id: g25
+    status: proposed
+    query: Adults with diabetes struggle to lose weight and control their blood sugar
+    expected: [intensive-diet-and-exercise-coaching-for-adults-with-type-2--d78f01]
+  # --- physical activity / built environment
+  - id: g26
+    status: proposed
+    query: Residents have nowhere safe to walk or bike, and obesity rates keep climbing
+    fips: ["04013"]
+    expected: [pairing-walking-biking-and-transit-upgrades-with-mixed-land--45b0a6]
+  - id: g27
+    status: proposed
+    query: City planners are rewriting the zoning code; can street design make people more active?
+    expected: [pairing-walking-biking-and-transit-upgrades-with-mixed-land--45b0a6]
+  - id: g28
+    status: proposed
+    query: Most adults in the state get too little physical activity
+    expected:
+      - pairing-walking-biking-and-transit-upgrades-with-mixed-land--45b0a6
+  # --- school violence
+  - id: g29
+    status: proposed
+    query: Fights and violence in middle schools are increasing
+    expected: [universal-school-based-violence-prevention-programs-social-e-12c92f]
+  - id: g30
+    status: proposed
+    query: Student fights and weapons on campus have parents demanding action from the school board
+    fips: ["26163"]
+    expected: [universal-school-based-violence-prevention-programs-social-e-12c92f]
+  - id: g31
+    status: proposed
+    query: Bullying and aggressive behavior are up among elementary students since the pandemic
+    expected: [universal-school-based-violence-prevention-programs-social-e-12c92f]
